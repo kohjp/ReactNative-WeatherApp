@@ -9,10 +9,19 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
+import { Fontisto } from "@expo/vector-icons";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const API_KEY = "65106434f1c85849e119a27a4efb8a18";
+
+const icons = {
+  Clouds: "cloudy",
+  Clear: "day-sunny",
+  Rain: "rains",
+  Snow: "snow",
+  Thunderstorm: "lightning",
+};
 
 export default function App() {
   const [city, setCity] = useState("Loading...");
@@ -71,9 +80,23 @@ export default function App() {
             return (
               <View key={idx} style={styles.day}>
                 <Text style={styles.date}>{dateFormat(day.dt_txt)}</Text>
-                <Text style={styles.temp}>
-                  {parseFloat(day.main.temp).toFixed(1)}
-                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Text style={styles.temp}>
+                    {parseFloat(day.main.temp).toFixed(1)}
+                  </Text>
+                  <Fontisto
+                    name={icons[day.weather[0].main]}
+                    size={60}
+                    color="black"
+                  />
+                </View>
                 <Text style={styles.description}>{day.weather[0].main}</Text>
               </View>
             );
@@ -102,13 +125,15 @@ const styles = StyleSheet.create({
   weather: {},
   day: {
     width: SCREEN_WIDTH,
-    alignItems: "center",
+    // alignItems: "center",
+    padding: 30,
+    gap: 10,
   },
   date: {
     fontSize: 30,
   },
   temp: {
-    fontSize: 178,
+    fontSize: 88,
     // marginTop: 50,
   },
   description: {
